@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/maleina/FullStackNano/capstone/base-project/starter/env"
+set -gx VIRTUAL_ENV "/Users/maleina/FullStackNano/capstone/project/env"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
