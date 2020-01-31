@@ -3,9 +3,12 @@ from flask_cors import CORS
 from models import setup_db, date_valid, Movie, Actor
 from auth import AuthError, requires_auth
 
+'''
+Create and configure the app.
+'''
+
 
 def create_app(test_config=None):
-    # Create and configure the app.
     myapp = Flask(__name__)
     setup_db(myapp)
     CORS(myapp)
@@ -14,21 +17,15 @@ def create_app(test_config=None):
 
 app = create_app()
 
+#
+# API Endpoints
+#
 
 '''
-def paginate(page_request, selection, data_type):
-    # Helper function used to determine the which actors or movies to display for a given page.
-    page = page_request.args.get('page', 1, type=int)
-    start = (page - 1) * ITEMS_PER_PAGE
-    end = start + ITEMS_PER_PAGE
-    if data_type == ACTORS:
-        actors = [actor.format() for actor in selection]
-        current_items = actors[start:end]
-    elif data_type == MOVIES:
-        movies = [movie.format() for movie in selection]
-        current_items = movies[start:end]
-
-    return current_items
+Endpoint GET /actors
+        It requires 'get:actors' permission.
+    Returns status code 200 and json {"success": True, "actors": actors} where actors is the list of all stored actors
+        or appropriate status code indicating reason for failure.
 '''
 
 
@@ -44,6 +41,14 @@ def get_all_actors(payload):
         'success': True,
         'actors': actors
     })
+
+
+'''
+Endpoint POST /actors
+        It requires 'post:actors' permission.
+    Returns status code 200 and json {"success": True, "actor": actor} where actor is the newly created actor
+        or appropriate status code indicating reason for failure.
+'''
 
 
 @app.route('/actors', methods=['POST'])
@@ -81,7 +86,16 @@ def create_actor(payload):
     except AuthError:
         abort(422)
 
-# TODO: Why getting 422 for a non-existing ids
+
+'''
+Endpoint PATCH /actors/<actor_id>
+        where <actor_id> is the existing actor's id
+        It requires 'patch:actors' permission.
+        It update the corresponding row for <actor_id>.
+        It responds with a 404 error if <actor_id> is not found.
+    Returns status code 200 and json {"success": True, "actor": actor} where actor is the updated actor
+        or appropriate status code indicating reason for failure.
+'''
 
 
 @app.route('/actors/<int:actor_id>', methods=['PATCH'])
@@ -115,7 +129,16 @@ def modify_actor(payload, actor_id):
     except AuthError:
         abort(422)
 
-# TODO: Why getting 422 for a non-existing ids
+
+'''
+Endpoint DELETE /actors/<actor_id>
+        where <actor_id> is the existing actor's id
+        It requires 'delete:actors' permission.
+        It deletes the corresponding row for <actor_id>.
+        It responds with a 404 error if <actor_id> is not found.
+    Returns status code 200 and json {"success": True, "delete": actor_id} where actor_id is the id for the deleted actor
+        or appropriate status code indicating reason for failure.
+'''
 
 
 @app.route('/actors/<int:actor_id>', methods=['DELETE'])
@@ -133,6 +156,14 @@ def delete_actor(payload, actor_id):
         abort(422)
 
 
+'''
+Endpoint GET /actors
+        It requires 'get:actors' permission.
+    Returns status code 200 and json {"success": True, "actors": actors} where actors is the list of all stored actors
+        or appropriate status code indicating reason for failure.
+'''
+
+
 @app.route('/movies')
 @requires_auth('get:movies')
 def get_all_movies(payload):
@@ -146,6 +177,14 @@ def get_all_movies(payload):
         'success': True,
         'movies': movies
     })
+
+
+'''
+Endpoint POST /movies
+        It requires 'post:movies' permission.
+    Returns status code 200 and json {"success": True, "movie": movie} where movie is the newly created movie
+        or appropriate status code indicating reason for failure.
+'''
 
 
 @app.route('/movies', methods=['POST'])
@@ -178,7 +217,16 @@ def create_movie(payload):
     except AuthError:
         abort(422)
 
-# TODO: Why getting 422 for a non-existing ids
+
+'''
+Endpoint PATCH /movies/<movie_id>
+        where <movie_id> is the existing movie's id
+        It requires 'patch:movies' permission.
+        It update the corresponding row for <movie_id>.
+        It responds with a 404 error if <movie_id> is not found.
+    Returns status code 200 and json {"success": True, "movie": movie} where movie is the updated movie
+        or appropriate status code indicating reason for failure.
+'''
 
 
 @app.route('/movies/<int:movie_id>', methods=['PATCH'])
@@ -207,7 +255,16 @@ def modify_movie(payload, movie_id):
     except AuthError:
         abort(422)
 
-# TODO: Why getting 422 for a non-existing ids
+
+'''
+Endpoint DELETE /movies/<movie_id>
+        where <movie_id> is the existing movie's id
+        It requires 'delete:movies' permission.
+        It deletes the corresponding row for <movie_id>.
+        It responds with a 404 error if <movie_id> is not found.
+    Returns status code 200 and json {"success": True, "delete": movie_id} where movie_id is the id for the deleted movie
+        or appropriate status code indicating reason for failure.
+'''
 
 
 @app.route('/movies/<int:movie_id>', methods=['DELETE'])
@@ -225,9 +282,9 @@ def delete_movie(payload, movie_id):
         abort(422)
 
 
-##################################################
+#
 # Error Handling
-##################################################
+#
 
 
 '''
@@ -291,7 +348,6 @@ Error handler for AuthError.
 '''
 
 
-'''
 @app.errorhandler(AuthError)
 def handle_invalid_usage(error):
     return jsonify({
@@ -299,12 +355,7 @@ def handle_invalid_usage(error):
         "error": error.error,
         "message": error.status_code
     }), error.error
-'''
 
-
-# TODO - Need to change this to app.run()?
-# if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port=8080, debug=True)
 
 if __name__ == '__main__':
     app.run()

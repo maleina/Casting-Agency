@@ -11,7 +11,7 @@ db = SQLAlchemy()
 
 '''
 setup_db(app)
-    binds a flask application and a SQLAlchemy service
+    binds a flask application and a SQLAlchemy service.
 '''
 
 
@@ -23,6 +23,12 @@ def setup_db(app, db_path=database_path):
     db.create_all()
 
 
+'''
+date_valid(date_str)
+    ensures that a valid date string has been enterred so that it may be stored in the database.
+'''
+
+
 def date_valid(date_str):
     try:
         is_valid = dateutil.parser.parse(date_str)
@@ -31,7 +37,12 @@ def date_valid(date_str):
         return False
 
 
-# TODO Should release date be required, i.e. not nullable?
+'''
+Movie
+    is a persistent movie entity that extends the base SQLAlchemy Model.
+'''
+
+
 class Movie(db.Model):
     __tablename__ = 'Movie'
 
@@ -43,13 +54,16 @@ class Movie(db.Model):
         self.title = title
         self.release_date = release_date
 
+    # Inserts a new movie into a database. It must have a unique name and id. It must have a release date.
     def insert(self):
         db.session.add(self)
         db.session.commit()
 
+    # Updates a movie in the database. The movie_id must already exist.
     def update(self):
         db.session.commit()
 
+    # Deletes a movie in the database. The movie_id must already exist.
     def delete(self):
         db.session.delete(self)
         db.session.commit()
@@ -62,13 +76,17 @@ class Movie(db.Model):
     def __repr__(self):
         return '<Movie %r>' % self
 
-    # determines if the movie to be added is already in the database
+    # Determines if the movie to be added is already in the database.
     def is_duplicate(self):
         return db.session.query(exists().where(func.lower(Movie.title) == func.lower(
             self.title))).scalar()
 
 
-# TODO: Validation to limit the input values of the gender field. Similarly limit age range values.
+'''
+Actor
+    is a persistent actor entity that extends the base SQLAlchemy Model.
+'''
+
 class Actor(db.Model):
     __tablename__ = 'Actor'
 
@@ -82,13 +100,16 @@ class Actor(db.Model):
         self.birth_date = birth_date
         self.gender = gender
 
+    # Inserts a new actor into a database. It must have a unique name and id. It must have a birth_date and gender.
     def insert(self):
         db.session.add(self)
         db.session.commit()
 
+    # Updates an actor in the database. The actor_id must already exist.
     def update(self):
         db.session.commit()
 
+    # Deletes an actor in the database. The actor_id must already exist.
     def delete(self):
         db.session.delete(self)
         db.session.commit()
@@ -102,7 +123,7 @@ class Actor(db.Model):
     def __repr__(self):
         return '<Actor %r>' % self
 
-    # determines if the movie to be added is already in the database
+    # Determines if the actor to be added is already in the database.
     def is_duplicate(self):
         return db.session.query(exists().where(func.lower(Actor.name) == func.lower(
             self.name))).scalar()

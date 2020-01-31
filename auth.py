@@ -21,14 +21,13 @@ class AuthError(Exception):
 
 
 # Auth Header
-
 '''
 get_token_auth_header() method
-    It should attempt to get the header from the request.
-        It should raise an AuthError if no header is present.
-    It should attempt to split bearer and the token.
-        It should raise an AuthError if the header is malformed.
-    Return the token part of the header.
+    It attempts to get the header from the request.
+        It raises an AuthError if no header is present.
+    It attempts to split bearer and the token.
+        It raises an AuthError if the header is malformed.
+    It returns the token part of the header.
 '''
 
 
@@ -70,10 +69,9 @@ check_permissions(permission, payload) method
     @INPUTS
         permission: string permission (i.e. 'post:actor')
         payload: decoded jwt payload
-    It should raise an AuthError if permissions are not included in the payload.
-        !!NOTE check your RBAC settings in Auth0
-    It should raise an AuthError if the requested permission string is not in the payload permissions array.
-    Return true otherwise.
+    It raises an AuthError if permissions are not included in the payload.
+    It raises an AuthError if the requested permission string is not in the payload permissions array.
+    It returns true otherwise.
 '''
 
 
@@ -96,11 +94,11 @@ def check_permissions(permission, payload):
 verify_decode_jwt(token) method
     @INPUTS
         token: a json web token (string)
-    It should be an Auth0 token with key id (kid).
-    It should verify the token using Auth0 /.well-known/jwks.json.
-    It should decode the payload from the token.
-    It should validate the claims.
-    Return the decoded payload.
+    The token should be an Auth0 token with key id (kid).
+    It verifies the token using Auth0 /.well-known/jwks.json.
+    It decodes the payload from the token.
+    It validates the claims.
+    It return the decoded payload.
     !!NOTE urlopen has a common certificate error described here: https://stackoverflow.com/questions/50236117/scraping-ssl-certificate-verify-failed-error-for-http-en-wikipedia-org
 '''
 
@@ -173,10 +171,10 @@ def verify_decode_jwt(token):
 @requires_auth(permission) decorator method.
     @INPUTS
         permission: string permission (i.e. 'post:actor')
-    It should use the get_token_auth_header method to get the token.
-    It should use the verify_decode_jwt method to decode the jwt.
-    It should use the check_permissions method validate claims and check the requested permission.
-    Return the decorator which passes the decoded payload to the decorated method.
+    It uses the get_token_auth_header method to get the token.
+    It uses the verify_decode_jwt method to decode the jwt.
+    It uses the check_permissions method validate claims and check the requested permission.
+    It returns the decorator which passes the decoded payload to the decorated method.
 '''
 
 
