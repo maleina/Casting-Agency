@@ -1,0 +1,7 @@
+# Don't track content of these folders
+.idea
+.vscode
+env
+venv
+__pycache__
+.DS_Store
