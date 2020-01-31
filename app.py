@@ -1,6 +1,7 @@
 from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
 from models import setup_db, date_valid, Movie, Actor
+from auth import AuthError, requires_auth
 
 
 def create_app(test_config=None):
@@ -32,7 +33,8 @@ def paginate(page_request, selection, data_type):
 
 
 @app.route('/actors')
-def get_all_actors():
+@requires_auth('get:actors')
+def get_all_actors(payload):
     selection = Actor.query.all()
     actors = [actor.format() for actor in selection]
     # Abort if there are no actors in the database.
@@ -43,11 +45,10 @@ def get_all_actors():
         'actors': actors
     })
 
-# TODO: Add payload and auth
-
 
 @app.route('/actors', methods=['POST'])
-def create_actor():
+@requires_auth('post:actors')
+def create_actor(payload):
     try:
         # Get new actor data from request.
         body = request.get_json()
@@ -77,16 +78,15 @@ def create_actor():
         # Otherwise, create a row in the database for the actor.
         actor.insert()
         return jsonify({'success': True, "actor": actor.format()})
-    # TODO Add except AuthError
-    except:
+    except AuthError:
         abort(422)
 
-# TODO: Add payload and auth
 # TODO: Why getting 422 for a non-existing ids
 
 
 @app.route('/actors/<int:actor_id>', methods=['PATCH'])
-def modify_actor(actor_id):
+@requires_auth('patch:actors')
+def modify_actor(payload, actor_id):
     try:
         # Find the actor with the given id, if they don't exist abort.
         actor = Actor.query.filter(Actor.actor_id == actor_id).one_or_none()
@@ -112,16 +112,15 @@ def modify_actor(actor_id):
             actor.gender = req_gender.upper()
         actor.update()
         return jsonify({"success": True, "actor": actor.format()})
-    # TODO Add except AuthError
-    except:
+    except AuthError:
         abort(422)
 
-# TODO: Add payload and auth
 # TODO: Why getting 422 for a non-existing ids
 
 
 @app.route('/actors/<int:actor_id>', methods=['DELETE'])
-def delete_actor(actor_id):
+@requires_auth('delete:actors')
+def delete_actor(payload, actor_id):
     try:
         # Find the actor with the given id, if they don't exist abort.
         actor = Actor.query.filter(Actor.actor_id == actor_id).one_or_none()
@@ -130,13 +129,13 @@ def delete_actor(actor_id):
 
         actor.delete()
         return jsonify({"success": True, "delete": actor_id})
-    # TODO Add except AuthError
-    except:
+    except AuthError:
         abort(422)
 
 
 @app.route('/movies')
-def get_all_movies():
+@requires_auth('get:movies')
+def get_all_movies(payload):
     selection = Movie.query.all()
     movies = [movie.format() for movie in selection]
 
@@ -148,11 +147,10 @@ def get_all_movies():
         'movies': movies
     })
 
-# TODO: Add payload and auth
-
 
 @app.route('/movies', methods=['POST'])
-def create_movie():
+@requires_auth('post:movies')
+def create_movie(payload):
     try:
         # Get new movie data from request.
         body = request.get_json()
@@ -177,16 +175,15 @@ def create_movie():
         # Otherwise, create a row in the database for the actor.
         movie.insert()
         return jsonify({'success': True, "movie": movie.format()})
-    # TODO Add except AuthError
-    except:
+    except AuthError:
         abort(422)
 
-# TODO: Add payload and auth
 # TODO: Why getting 422 for a non-existing ids
 
 
 @app.route('/movies/<int:movie_id>', methods=['PATCH'])
-def modify_movie(movie_id):
+@requires_auth('patch:movies')
+def modify_movie(payload, movie_id):
     try:
         # Find the movie with the given id, if it doesn't exist abort.
         movie = Movie.query.filter(Movie.movie_id == movie_id).one_or_none()
@@ -207,17 +204,15 @@ def modify_movie(movie_id):
             movie.release_date = req_release_date
         movie.update()
         return jsonify({"success": True, "movie": movie.format()})
-    # TODO Add except AuthError
-    except:
+    except AuthError:
         abort(422)
 
-
-# TODO: Add payload and auth
 # TODO: Why getting 422 for a non-existing ids
 
 
 @app.route('/movies/<int:movie_id>', methods=['DELETE'])
-def delete_movie(movie_id):
+@requires_auth('delete:movies')
+def delete_movie(payload, movie_id):
     try:
         # Find the movie with the given id, if it doesn't exist abort.
         movie = Movie.query.filter(Movie.movie_id == movie_id).one_or_none()
@@ -226,8 +221,7 @@ def delete_movie(movie_id):
 
         movie.delete()
         return jsonify({"success": True, "delete": movie_id})
-    # TODO Add except AuthError
-    except:
+    except AuthError:
         abort(422)
 
 
