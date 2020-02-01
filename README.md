@@ -63,7 +63,7 @@ Please note that 'dropdb casting_test' can be omitted the first time that the te
 
 ### Base URL
 
-The base url of the live version of the api is: https://maleina-casting.herokuapp.com/. Note that you must specify an endpoint (i.e. /movies) and have a valid token with the appropriate permissions to be able to access the data. See below for more information.
+The base url of the live version of the api is: [https://maleina-casting.herokuapp.com/](https://maleina-casting.herokuapp.com/). Note that you must specify an endpoint (i.e. /movies) and have a valid token with the appropriate permissions to be able to access the data. See below for more information.
 
 When running locally, the backend can be accessed at http://127.0.0.1:5000/.
 
@@ -78,9 +78,7 @@ The following roles exist:
 
 As mentioned above, you must have a valid token with the appropriate permissions to be able to access the data. If you are installing the application locally, you will need to set up an auth0 account and create an app with roles and permissions listed below. 
 
-FOR THE UDACITY REVIEWER:
-
-Temporary testing tokens are in the .env.testing file. TEST_TOKEN is a temporary Executive Producer token that will allow you to access all endpoints. Similarly, TEST_DIRECTOR contains a temporary Casting Director token and TEST_ASSISTANT contains a temporary Casting Assistant token.
+To use the live version of the app, you may request a login token [here](https://mcbcoffee.auth0.com/authorize?audience=casting&response_type=token&client_id=N0oH1b7aolXqtSjgc2hKxFD6eulvJVto&redirect_uri=https://localhost:8080).
 
 Otherwise, contact the author (see below) for additional assistance. 
 
