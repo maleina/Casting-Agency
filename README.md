@@ -76,7 +76,13 @@ The following roles exist:
 - ```Casting Director``` - can do all of the above, plus add and delete actors and modify actors and movies.
 - ```Executive Producer``` - can do all of the above, plus add or delete movies.
 
-As mentioned above, you must have a valid token with the appropriate permissions to be able to access the data. If you are installing the application locally, you will need to set up an auth0 account and create an app with roles and permissions listed below. Otherwise, contact the author (see below) for additional assistance. 
+As mentioned above, you must have a valid token with the appropriate permissions to be able to access the data. If you are installing the application locally, you will need to set up an auth0 account and create an app with roles and permissions listed below. 
+
+FOR THE UDACITY REVIEWER:
+
+Temporary testing tokens are in the .env.testing file. TEST_TOKEN is a temporary Executive Producer token that will allow you to access all endpoints. Similarly, TEST_DIRECTOR contains a temporary Casting Director token and TEST_ASSISTANT contains a temporary Casting Assistant token.
+
+Otherwise, contact the author (see below) for additional assistance. 
 
 #### Permissions by Role
 
