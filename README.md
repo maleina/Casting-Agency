@@ -4,7 +4,7 @@
 
 This project was created as part of Udacity's Full Stack Developer Nanodegree program in order to demonstrate mastery of the skills learned during the program. The goal was to complete the backend API for a casting agency web app. The application:
 
-1) Returns a list of available actors and movies to be cast
+1) Returns a list of available actors and movies to be cast.
 2) Provides the ability to add, modify or delete both actors and movies.
 3) Implements Rules Based Access Control (RBAC):
     - Casting Agents may only view actors and movies.
@@ -40,17 +40,17 @@ psql casting < casting.psql
 The server can be started by executing the following commands from the main project directory:
 
 ```bash
-source setup.sh    # Sets DATABASE_URL environment variable 
+source setup.sh    # Sets necessary environment variables 
 export FLASK_APP=app.py
 flask run --reload
 ```
 
 ### Tests
 
-To run the tests included in test_app.py run the following from the command line in the main project directory:
+Tests are included in test_app.py. Run the following from the command line in the main project directory in order to set up the testing environment and database:
 
 ```bash
-source .env.testing
+source .env.testing    # Sets necessary testing environment variables 
 dropdb casting_test
 createdb casting_test
 psql casting_test < casting.psql
@@ -63,7 +63,7 @@ Please note that 'dropdb casting_test' can be omitted the first time that the te
 
 ### Base URL
 
-The base url of the live version of the api is: https://maleina-casting.herokuapp.com/. Note that you must specify an endpoint (i.e. /movies) and have a valid token with the appropriate permissions to be able to access the data. In the *.env.testing* file, the TEST_TOKEN variable contains a time-limited valid token that may be used to access all endpoints of the api. See below for other tokens. Otherwise, contact the author (see below) for additional assistance.
+The base url of the live version of the api is: https://maleina-casting.herokuapp.com/. Note that you must specify an endpoint (i.e. /movies) and have a valid token with the appropriate permissions to be able to access the data. See below for more information.
 
 When running locally, the backend can be accessed at http://127.0.0.1:5000/.
 
@@ -76,7 +76,7 @@ The following roles exist:
 - ```Casting Director``` - can do all of the above, plus add and delete actors and modify actors and movies.
 - ```Executive Producer``` - can do all of the above, plus add or delete movies.
 
-As mentioned above, you must have a valid token with the appropriate permissions to be able to access the data. In the *.env.testing* file, the TEST_TOKEN variable contains a time-limited valid token for the Executive Producer role that may be used to access all endpoints of the api. Similarly, the TEST_DIRECTOR and TEST_ASSISTANT variables contain time-limited tokens for the Casting Director and Casting Assistant roles respectively. Otherwise, contact the author (see below) for additional assistance. 
+As mentioned above, you must have a valid token with the appropriate permissions to be able to access the data. If you are installing the application locally, you will need to set up an auth0 account and create an app with roles and permissions listed below. Otherwise, contact the author (see below) for additional assistance. 
 
 #### Permissions by Role
 
@@ -122,6 +122,8 @@ The API will return the following error types:
 
 ### Resource Endpoint Library
 
+Note that all of the examples below require that you add a valid token to the curl request.
+
 #### GET /actors
 
 Returns a list of actor objects and the success value.
@@ -129,8 +131,8 @@ Returns a list of actor objects and the success value.
 ##### Sample Request
 
 ```
-curl --location --request GET 'localhost:5000/actors' \
---header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1qQkNOMEV5TURkR1JqSXhPRVJFT0RORE9UZzFORGxFTVRBd09USTVOekZCT1RNek1URTFNUSJ9.eyJpc3MiOiJodHRwczovL21jYmNvZmZlZS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWUwMGM1NzIzOWE4ZDIwZThiYTE0ODU4IiwiYXVkIjoiY2FzdGluZyIsImlhdCI6MTU4MDUwMjQ0NywiZXhwIjoxNTgwNTg4ODQ3LCJhenAiOiJOMG9IMWI3YW9sWHF0U2pnYzJoS3hGRDZldWx2SlZ0byIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIiwicGF0Y2g6YWN0b3JzIiwicGF0Y2g6bW92aWVzIiwicG9zdDphY3RvcnMiXX0.M9Zlvn9k62DR_MUko4Rm1EwF1Qpdob7_LDnud9IlZtXMAlUe3X5TTsuaL_qV903xbiBE2qebOMsUhVd49JY9luzCBThHe0P-ibfEIAEcWvHpZbXQ5mfLssoCBz0I9w7kOzuopcOY0YzvXDWXiRcWzWma2cqngCBf4zn-m-gdqspmi9greLzHFh-Mz0O1C0k0LdGO6qpED9EWrQqyl7gShV-KFgZXg3UvxCp0pFK2DY8DAHTA6rX48L5iEcrWKYJ3H789z0SGAeAdtzKAtgNFwxH41BTT-I7vCbanVBbx7zjFUEabcIanwo3kKbk4kN3fc_O-bSySTWeu0TlGXpGySw'
+curl --location --request GET 'https://maleina-casting.herokuapp.com/actors' \
+--header 'Authorization: Bearer <INSERT TOKEN HERE>'
 ```
 
 ##### Sample Response
@@ -168,8 +170,8 @@ Returns a list of movie objects and the success value.
 ##### Sample Request
 
 ```
-curl --location --request GET 'localhost:5000/movies' \
---header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1qQkNOMEV5TURkR1JqSXhPRVJFT0RORE9UZzFORGxFTVRBd09USTVOekZCT1RNek1URTFNUSJ9.eyJpc3MiOiJodHRwczovL21jYmNvZmZlZS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWUwMGM1NzIzOWE4ZDIwZThiYTE0ODU4IiwiYXVkIjoiY2FzdGluZyIsImlhdCI6MTU4MDUwMjQ0NywiZXhwIjoxNTgwNTg4ODQ3LCJhenAiOiJOMG9IMWI3YW9sWHF0U2pnYzJoS3hGRDZldWx2SlZ0byIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIiwicGF0Y2g6YWN0b3JzIiwicGF0Y2g6bW92aWVzIiwicG9zdDphY3RvcnMiXX0.M9Zlvn9k62DR_MUko4Rm1EwF1Qpdob7_LDnud9IlZtXMAlUe3X5TTsuaL_qV903xbiBE2qebOMsUhVd49JY9luzCBThHe0P-ibfEIAEcWvHpZbXQ5mfLssoCBz0I9w7kOzuopcOY0YzvXDWXiRcWzWma2cqngCBf4zn-m-gdqspmi9greLzHFh-Mz0O1C0k0LdGO6qpED9EWrQqyl7gShV-KFgZXg3UvxCp0pFK2DY8DAHTA6rX48L5iEcrWKYJ3H789z0SGAeAdtzKAtgNFwxH41BTT-I7vCbanVBbx7zjFUEabcIanwo3kKbk4kN3fc_O-bSySTWeu0TlGXpGySw'
+curl --location --request GET 'https://maleina-casting.herokuapp.com/movies' \
+--header 'Authorization: Bearer <INSERT TOKEN HERE>'
 ```
 
 ##### Sample Response
@@ -199,9 +201,9 @@ Creates a new actor with a unique name and a valid birth date and gender. All fi
 ##### Sample Request
 
 ```
-curl --location --request POST 'localhost:5000/actors' \
+curl --location --request POST 'https://maleina-casting.herokuapp.com/actors' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1qQkNOMEV5TURkR1JqSXhPRVJFT0RORE9UZzFORGxFTVRBd09USTVOekZCT1RNek1URTFNUSJ9.eyJpc3MiOiJodHRwczovL21jYmNvZmZlZS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWUwMGM3MWM2MDhjMWEwZTc3YjY4NWZjIiwiYXVkIjoiY2FzdGluZyIsImlhdCI6MTU4MDUyMzk5NCwiZXhwIjoxNTgwNjEwMzk0LCJhenAiOiJOMG9IMWI3YW9sWHF0U2pnYzJoS3hGRDZldWx2SlZ0byIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.dkX2juQeJRWoJmSB8Cn6g3Qra2QiFZwe_Aj_W722CeSXTNBHXpwSFtWSvB7n1_wQR7IcoTUHBIa-y2e-_tj8c2diMhYSkCGz9ffHbrqUPy9at7BLsOe9FW5HhsC2Libhm4rRc7GBNf7EQM8cnzZ1MZdgkzzXYjKlJTo7-Guxwz4mLYhOSEOLEGWrcA3gp9opmxVh0OdJzmzk5pHWYnifRRABXgh0e86JBCtO3eeNyk5-gFYxqzs_bLb3UWNhmugv38fFj8OQzM-XqoGYm5mIL9bIL7Lmkdrp5oekPSZu6K_G4RQytTH7_XAuK_h2vXc2QOfX_Y1U1r5IEeqtmv6NQw' \
+--header 'Authorization: Bearer <INSERT TOKEN HERE>' \
 --data-raw '{
 	"name": "Jane Doe",
 	"birth_date": "August 31, 1966",
@@ -230,9 +232,9 @@ Creates a new movie with a unique title and valid release date. All fields are r
 ##### Sample Request
 
 ```
-curl --location --request POST 'localhost:5000/movies' \
+curl --location --request POST 'https://maleina-casting.herokuapp.com/movies' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1qQkNOMEV5TURkR1JqSXhPRVJFT0RORE9UZzFORGxFTVRBd09USTVOekZCT1RNek1URTFNUSJ9.eyJpc3MiOiJodHRwczovL21jYmNvZmZlZS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWUwMGM3MWM2MDhjMWEwZTc3YjY4NWZjIiwiYXVkIjoiY2FzdGluZyIsImlhdCI6MTU4MDUyMzk5NCwiZXhwIjoxNTgwNjEwMzk0LCJhenAiOiJOMG9IMWI3YW9sWHF0U2pnYzJoS3hGRDZldWx2SlZ0byIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.dkX2juQeJRWoJmSB8Cn6g3Qra2QiFZwe_Aj_W722CeSXTNBHXpwSFtWSvB7n1_wQR7IcoTUHBIa-y2e-_tj8c2diMhYSkCGz9ffHbrqUPy9at7BLsOe9FW5HhsC2Libhm4rRc7GBNf7EQM8cnzZ1MZdgkzzXYjKlJTo7-Guxwz4mLYhOSEOLEGWrcA3gp9opmxVh0OdJzmzk5pHWYnifRRABXgh0e86JBCtO3eeNyk5-gFYxqzs_bLb3UWNhmugv38fFj8OQzM-XqoGYm5mIL9bIL7Lmkdrp5oekPSZu6K_G4RQytTH7_XAuK_h2vXc2QOfX_Y1U1r5IEeqtmv6NQw' \
+--header 'Authorization: Bearer <INSERT TOKEN HERE>' \
 --data-raw '{
 	"title": "Violent Movie",
 	"release_date": "July 4, 2020"
@@ -259,9 +261,9 @@ Updates the "name", "birth_date" or "gender" for an existing actor. Requires the
 ##### Sample Request
 
 ```
-curl --location --request PATCH 'localhost:5000/actors/8' \
+curl --location --request PATCH 'https://maleina-casting.herokuapp.com/actors/8' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1qQkNOMEV5TURkR1JqSXhPRVJFT0RORE9UZzFORGxFTVRBd09USTVOekZCT1RNek1URTFNUSJ9.eyJpc3MiOiJodHRwczovL21jYmNvZmZlZS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWUwMGM3MWM2MDhjMWEwZTc3YjY4NWZjIiwiYXVkIjoiY2FzdGluZyIsImlhdCI6MTU4MDUyMzk5NCwiZXhwIjoxNTgwNjEwMzk0LCJhenAiOiJOMG9IMWI3YW9sWHF0U2pnYzJoS3hGRDZldWx2SlZ0byIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.dkX2juQeJRWoJmSB8Cn6g3Qra2QiFZwe_Aj_W722CeSXTNBHXpwSFtWSvB7n1_wQR7IcoTUHBIa-y2e-_tj8c2diMhYSkCGz9ffHbrqUPy9at7BLsOe9FW5HhsC2Libhm4rRc7GBNf7EQM8cnzZ1MZdgkzzXYjKlJTo7-Guxwz4mLYhOSEOLEGWrcA3gp9opmxVh0OdJzmzk5pHWYnifRRABXgh0e86JBCtO3eeNyk5-gFYxqzs_bLb3UWNhmugv38fFj8OQzM-XqoGYm5mIL9bIL7Lmkdrp5oekPSZu6K_G4RQytTH7_XAuK_h2vXc2QOfX_Y1U1r5IEeqtmv6NQw' \
+--header 'Authorization: Bearer <INSERT TOKEN HERE>' \
 --data-raw '{
 	"gender": "F",
     "name": "Janet Dole"
@@ -289,9 +291,9 @@ Updates the "title" and "release_date" for an existing movie. Requires the movie
 ##### Sample Request
 
 ```
-curl --location --request PATCH 'localhost:5000/movies/6' \
+curl --location --request PATCH 'https://maleina-casting.herokuapp.com/movies/6' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1qQkNOMEV5TURkR1JqSXhPRVJFT0RORE9UZzFORGxFTVRBd09USTVOekZCT1RNek1URTFNUSJ9.eyJpc3MiOiJodHRwczovL21jYmNvZmZlZS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWUwMGM3MWM2MDhjMWEwZTc3YjY4NWZjIiwiYXVkIjoiY2FzdGluZyIsImlhdCI6MTU4MDUyMzk5NCwiZXhwIjoxNTgwNjEwMzk0LCJhenAiOiJOMG9IMWI3YW9sWHF0U2pnYzJoS3hGRDZldWx2SlZ0byIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.dkX2juQeJRWoJmSB8Cn6g3Qra2QiFZwe_Aj_W722CeSXTNBHXpwSFtWSvB7n1_wQR7IcoTUHBIa-y2e-_tj8c2diMhYSkCGz9ffHbrqUPy9at7BLsOe9FW5HhsC2Libhm4rRc7GBNf7EQM8cnzZ1MZdgkzzXYjKlJTo7-Guxwz4mLYhOSEOLEGWrcA3gp9opmxVh0OdJzmzk5pHWYnifRRABXgh0e86JBCtO3eeNyk5-gFYxqzs_bLb3UWNhmugv38fFj8OQzM-XqoGYm5mIL9bIL7Lmkdrp5oekPSZu6K_G4RQytTH7_XAuK_h2vXc2QOfX_Y1U1r5IEeqtmv6NQw' \
+--header 'Authorization: Bearer <INSERT TOKEN HERE>' \
 --data-raw '{
 	"title": "Less Violent Movie"
 }'
@@ -318,8 +320,8 @@ Deletes an existing actor with the given actor_id (required). Returns the succes
 ##### Sample Request
 
 ```
-curl --location --request DELETE 'localhost:5000/actors/8' \
---header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1qQkNOMEV5TURkR1JqSXhPRVJFT0RORE9UZzFORGxFTVRBd09USTVOekZCT1RNek1URTFNUSJ9.eyJpc3MiOiJodHRwczovL21jYmNvZmZlZS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWUwMGM3MWM2MDhjMWEwZTc3YjY4NWZjIiwiYXVkIjoiY2FzdGluZyIsImlhdCI6MTU4MDUyMzk5NCwiZXhwIjoxNTgwNjEwMzk0LCJhenAiOiJOMG9IMWI3YW9sWHF0U2pnYzJoS3hGRDZldWx2SlZ0byIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.dkX2juQeJRWoJmSB8Cn6g3Qra2QiFZwe_Aj_W722CeSXTNBHXpwSFtWSvB7n1_wQR7IcoTUHBIa-y2e-_tj8c2diMhYSkCGz9ffHbrqUPy9at7BLsOe9FW5HhsC2Libhm4rRc7GBNf7EQM8cnzZ1MZdgkzzXYjKlJTo7-Guxwz4mLYhOSEOLEGWrcA3gp9opmxVh0OdJzmzk5pHWYnifRRABXgh0e86JBCtO3eeNyk5-gFYxqzs_bLb3UWNhmugv38fFj8OQzM-XqoGYm5mIL9bIL7Lmkdrp5oekPSZu6K_G4RQytTH7_XAuK_h2vXc2QOfX_Y1U1r5IEeqtmv6NQw'
+curl --location --request DELETE 'https://maleina-casting.herokuapp.com/actors/8' \
+--header 'Authorization: Bearer <INSERT TOKEN HERE>'
 ```
 
 ##### Sample Response
@@ -338,8 +340,8 @@ Deletes an existing movie with the given movie_id (required). Returns the succes
 ##### Sample Request
 
 ```
-curl --location --request DELETE 'localhost:5000/movies/6' \
---header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1qQkNOMEV5TURkR1JqSXhPRVJFT0RORE9UZzFORGxFTVRBd09USTVOekZCT1RNek1URTFNUSJ9.eyJpc3MiOiJodHRwczovL21jYmNvZmZlZS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWUwMGM3MWM2MDhjMWEwZTc3YjY4NWZjIiwiYXVkIjoiY2FzdGluZyIsImlhdCI6MTU4MDUyMzk5NCwiZXhwIjoxNTgwNjEwMzk0LCJhenAiOiJOMG9IMWI3YW9sWHF0U2pnYzJoS3hGRDZldWx2SlZ0byIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.dkX2juQeJRWoJmSB8Cn6g3Qra2QiFZwe_Aj_W722CeSXTNBHXpwSFtWSvB7n1_wQR7IcoTUHBIa-y2e-_tj8c2diMhYSkCGz9ffHbrqUPy9at7BLsOe9FW5HhsC2Libhm4rRc7GBNf7EQM8cnzZ1MZdgkzzXYjKlJTo7-Guxwz4mLYhOSEOLEGWrcA3gp9opmxVh0OdJzmzk5pHWYnifRRABXgh0e86JBCtO3eeNyk5-gFYxqzs_bLb3UWNhmugv38fFj8OQzM-XqoGYm5mIL9bIL7Lmkdrp5oekPSZu6K_G4RQytTH7_XAuK_h2vXc2QOfX_Y1U1r5IEeqtmv6NQw'
+curl --location --request DELETE 'https://maleina-casting.herokuapp.com/movies/6' \
+--header 'Authorization: Bearer <INSERT TOKEN HERE>'
 ```
 
 ##### Sample Response
