@@ -4,10 +4,8 @@ from models import setup_db, date_valid, Movie, Actor
 from auth import AuthError, requires_auth
 
 
-app = Flask(__name__)
-
 '''
-Create and configure the app.
+create_app() creates and configures the app.
 '''
 
 
@@ -16,14 +14,14 @@ def create_app(test_config=None):
     setup_db(app)
     CORS(app)
 
-    #
+    # ----------------------------------------
     # API Endpoints
-    #
+    # ----------------------------------------
 
     '''
-    Endpoint GET /actors
-            It requires 'get:actors' permission.
-        Returns status code 200 and json {"success": True, "actors": actors} where actors is the list of all stored actors
+    Endpoint GET /actors:
+        - requires 'get:actors' permission.
+        - returns status code 200 and json {"success": True, "actors": actors} where actors is the list of all stored actors
             or appropriate status code indicating reason for failure.
     '''
 
@@ -41,9 +39,9 @@ def create_app(test_config=None):
         })
 
     '''
-    Endpoint POST /actors
-            It requires 'post:actors' permission.
-        Returns status code 200 and json {"success": True, "actor": actor} where actor is the newly created actor
+    Endpoint POST /actors:
+        - requires 'post:actors' permission.
+        - returns status code 200 and json {"success": True, "actor": actor} where actor is the newly created actor
             or appropriate status code indicating reason for failure.
     '''
 
@@ -83,12 +81,12 @@ def create_app(test_config=None):
             abort(422)
 
     '''
-    Endpoint PATCH /actors/<actor_id>
-            where <actor_id> is the existing actor's id
-            It requires 'patch:actors' permission.
-            It update the corresponding row for <actor_id>.
-            It responds with a 404 error if <actor_id> is not found.
-        Returns status code 200 and json {"success": True, "actor": actor} where actor is the updated actor
+    Endpoint PATCH /actors/<actor_id>:
+        - <actor_id> is the existing actor's id
+        - requires 'patch:actors' permission.
+        - updates the corresponding row for <actor_id>.
+        - responds with a 404 error if <actor_id> is not found.
+        - returns status code 200 and json {"success": True, "actor": actor} where actor is the updated actor
             or appropriate status code indicating reason for failure.
     '''
 
@@ -124,12 +122,12 @@ def create_app(test_config=None):
             abort(422)
 
     '''
-    Endpoint DELETE /actors/<actor_id>
-            where <actor_id> is the existing actor's id
-            It requires 'delete:actors' permission.
-            It deletes the corresponding row for <actor_id>.
-            It responds with a 404 error if <actor_id> is not found.
-        Returns status code 200 and json {"success": True, "delete": actor_id} where actor_id is the id for the deleted actor
+    Endpoint DELETE /actors/<actor_id>: 
+        - <actor_id> is the existing actor's id
+        - requires 'delete:actors' permission.
+        - deletes the corresponding row for <actor_id>.
+        - responds with a 404 error if <actor_id> is not found.
+        - returns status code 200 and json {"success": True, "delete": actor_id} where actor_id is the id for the deleted actor
             or appropriate status code indicating reason for failure.
     '''
 
@@ -148,9 +146,9 @@ def create_app(test_config=None):
             abort(422)
 
     '''
-    Endpoint GET /actors
-            It requires 'get:actors' permission.
-        Returns status code 200 and json {"success": True, "actors": actors} where actors is the list of all stored actors
+    Endpoint GET /actors:
+        - requires 'get:actors' permission.
+        - returns status code 200 and json {"success": True, "actors": actors} where actors is the list of all stored actors
             or appropriate status code indicating reason for failure.
     '''
 
@@ -169,9 +167,9 @@ def create_app(test_config=None):
         })
 
     '''
-    Endpoint POST /movies
-            It requires 'post:movies' permission.
-        Returns status code 200 and json {"success": True, "movie": movie} where movie is the newly created movie
+    Endpoint POST /movies:
+        - requires 'post:movies' permission.
+        - returns status code 200 and json {"success": True, "movie": movie} where movie is the newly created movie
             or appropriate status code indicating reason for failure.
     '''
 
@@ -192,26 +190,26 @@ def create_app(test_config=None):
             if not date_valid(req_release_date):
                 return abort(422)
 
-            # Format and create the actor object.
+            # Format and create the movie object.
             movie = Movie(title=req_title, release_date=req_release_date)
 
-            # Abort if the actor is already present in the database.
+            # Abort if the movie is already present in the database.
             if movie.is_duplicate():
                 abort(422)
 
-            # Otherwise, create a row in the database for the actor.
+            # Otherwise, create a row in the database for the movie.
             movie.insert()
             return jsonify({'success': True, "movie": movie.format()})
         except AuthError:
             abort(422)
 
     '''
-    Endpoint PATCH /movies/<movie_id>
-            where <movie_id> is the existing movie's id
-            It requires 'patch:movies' permission.
-            It update the corresponding row for <movie_id>.
-            It responds with a 404 error if <movie_id> is not found.
-        Returns status code 200 and json {"success": True, "movie": movie} where movie is the updated movie
+    Endpoint PATCH /movies/<movie_id>:
+        - <movie_id> is the existing movie's id
+        - requires 'patch:movies' permission.
+        - update the corresponding row for <movie_id>.
+        - responds with a 404 error if <movie_id> is not found.
+        - returns status code 200 and json {"success": True, "movie": movie} where movie is the updated movie
             or appropriate status code indicating reason for failure.
     '''
 
@@ -242,12 +240,12 @@ def create_app(test_config=None):
             abort(422)
 
     '''
-    Endpoint DELETE /movies/<movie_id>
-            where <movie_id> is the existing movie's id
-            It requires 'delete:movies' permission.
-            It deletes the corresponding row for <movie_id>.
-            It responds with a 404 error if <movie_id> is not found.
-        Returns status code 200 and json {"success": True, "delete": movie_id} where movie_id is the id for the deleted movie
+    Endpoint DELETE /movies/<movie_id>:
+        - <movie_id> is the existing movie's id
+        - requires 'delete:movies' permission.
+        - deletes the corresponding row for <movie_id>.
+        - responds with a 404 error if <movie_id> is not found.
+        - returns status code 200 and json {"success": True, "delete": movie_id} where movie_id is the id for the deleted movie
             or appropriate status code indicating reason for failure.
     '''
 
@@ -265,10 +263,9 @@ def create_app(test_config=None):
         except AuthError:
             abort(422)
 
-
-    #
-    # Error Handling
-    #
+    '''
+    Error Handling
+    '''
 
     '''
     Error handling for 422 Unprocessable entity.

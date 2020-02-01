@@ -10,8 +10,7 @@ db = SQLAlchemy()
 
 
 '''
-setup_db(app)
-    binds a flask application and a SQLAlchemy service.
+setup_db(app) binds a flask application and a SQLAlchemy service.
 '''
 
 
@@ -24,8 +23,7 @@ def setup_db(app, db_path=database_path):
 
 
 '''
-date_valid(date_str)
-    ensures that a valid date string has been enterred so that it may be stored in the database.
+date_valid(date_str) ensures that a valid date string has been entered so that it may be stored in the database.
 '''
 
 
@@ -38,8 +36,7 @@ def date_valid(date_str):
 
 
 '''
-Movie
-    is a persistent movie entity that extends the base SQLAlchemy Model.
+Movie is a persistent movie entity that extends the base SQLAlchemy Model.
 '''
 
 
@@ -83,9 +80,9 @@ class Movie(db.Model):
 
 
 '''
-Actor
-    is a persistent actor entity that extends the base SQLAlchemy Model.
+Actor is a persistent actor entity that extends the base SQLAlchemy Model.
 '''
+
 
 class Actor(db.Model):
     __tablename__ = 'Actor'
